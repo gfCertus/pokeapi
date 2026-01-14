@@ -1,0 +1,20 @@
+/* Importante: Mantenemos el CSS al mínimo, delegando la mayoría a Bootstrap */
+body {
+    background-color: #f8f9fa;
+}
+
+header {
+    /* Color de fondo temático (Pokémon/Pikachu) */
+    background-color: #ffcc00 !important;
+    color: #3b4cca !important;
+}
+
+/* Ocultar el control de audio hasta que esté listo */
+#pokemonAudio {
+    visibility: hidden;
+}
+
+/* Estilo para el contenedor de la tarjeta */
+.card {
+    border-color: #3b4cca;
+}
