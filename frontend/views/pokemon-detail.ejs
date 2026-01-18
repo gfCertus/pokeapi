@@ -1,0 +1,113 @@
+<% if (pokemon) { %>
+    <div class="pokemon-detail-header">
+        <div>
+            <h1 class="pokemon-title">
+                #<%= pokemon.id %> 
+                <span class="pokemon-name"><%= pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1) %></span>
+            </h1>
+            <div class="pokemon-types">
+                <% pokemon.types.forEach(type => { %>
+                    <span class="type-badge type-<%= type %>"><%= type %></span>
+                <% }) %>
+            </div>
+        </div>
+        
+        <div class="pokemon-navigation">
+            <% if (pokemon.id > 1) { %>
+                <a href="/pokemon/<%= pokemon.id - 1 %>" class="btn btn-outline">
+                    <i class="fas fa-chevron-left"></i> #<%= pokemon.id - 1 %>
+                </a>
+            <% } %>
+            
+            <a href="/pokemon" class="btn btn-outline">Lista</a>
+            
+            <a href="/pokemon/<%= pokemon.id + 1 %>" class="btn btn-outline">
+                #<%= pokemon.id + 1 %> <i class="fas fa-chevron-right"></i>
+            </a>
+        </div>
+    </div>
+
+    <div class="pokemon-detail-content">
+        <div class="pokemon-images">
+            <img src="<%= pokemon.sprites.official_artwork || pokemon.sprites.front_default %>" 
+                 alt="<%= pokemon.name %>"
+                 class="main-image">
+            
+            <div class="sprite-grid">
+                <img src="<%= pokemon.sprites.front_default %>" 
+                     alt="<%= pokemon.name %> frontal">
+                <% if (pokemon.sprites.front_shiny) { %>
+                    <img src="<%= pokemon.sprites.front_shiny %>" 
+                         alt="<%= pokemon.name %> shiny">
+                <% } %>
+            </div>
+        </div>
+
+        <div class="pokemon-info">
+            <div class="info-card card">
+                <h3><i class="fas fa-info-circle"></i> Información</h3>
+                <ul class="info-list">
+                    <li><strong>Altura:</strong> <%= pokemon.height %> m</li>
+                    <li><strong>Peso:</strong> <%= pokemon.weight %> kg</li>
+                    <li><strong>Experiencia base:</strong> <%= pokemon.base_experience %></li>
+                </ul>
+            </div>
+
+            <div class="info-card card">
+                <h3><i class="fas fa-bolt"></i> Habilidades</h3>
+                <ul class="abilities-list">
+                    <% pokemon.abilities.forEach(ability => { %>
+                        <li><%= ability.name || ability %></li>
+                    <% }) %>
+                </ul>
+            </div>
+
+            <% if (pokemon.stats && pokemon.stats.length > 0) { %>
+                <div class="info-card card">
+                    <h3><i class="fas fa-chart-bar"></i> Estadísticas</h3>
+                    <div class="stats-grid">
+                        <% pokemon.stats.forEach(stat => { %>
+                            <div class="stat-item">
+                                <span class="stat-name"><%= stat.name %></span>
+                                <span class="stat-value"><%= stat.value %></span>
+                            </div>
+                        <% }) %>
+                    </div>
+                </div>
+            <% } %>
+
+            <% if (cries && (cries.latest || cries.legacy)) { %>
+                <div class="info-card card">
+                    <h3><i class="fas fa-volume-up"></i> Sonidos</h3>
+                    <div class="sounds-grid">
+                        <% if (cries.latest) { %>
+                            <div class="sound-item">
+                                <audio controls>
+                                    <source src="<%= cries.latest %>" type="audio/ogg">
+                                    Tu navegador no soporta audio.
+                                </audio>
+                                <span class="sound-label">Último grito</span>
+                            </div>
+                        <% } %>
+                        
+                        <% if (cries.legacy) { %>
+                            <div class="sound-item">
+                                <audio controls>
+                                    <source src="<%= cries.legacy %>" type="audio/ogg">
+                                    Tu navegador no soporta audio.
+                                </audio>
+                                <span class="sound-label">Grito legado</span>
+                            </div>
+                        <% } %>
+                    </div>
+                </div>
+            <% } %>
+        </div>
+    </div>
+<% } else { %>
+    <div class="error-message">
+        <i class="fas fa-exclamation-triangle fa-3x"></i>
+        <h3>Pokémon no encontrado</h3>
+        <a href="/pokemon" class="btn btn-primary">Volver a la lista</a>
+    </div>
+<% } %>

@@ -1,0 +1,38 @@
+<div class="error-page">
+    <div class="error-icon">
+        <i class="fas fa-map-signs fa-4x"></i>
+    </div>
+    
+    <h1>404 - Página no encontrada</h1>
+    
+    <p class="error-message">
+        La ruta que buscas no existe en nuestra Pokédex.
+    </p>
+    
+    <% if (requestedUrl) { %>
+        <div class="error-details card">
+            <p><strong>Ruta solicitada:</strong> <%= requestedUrl %></p>
+            <p><strong>Hora:</strong> <span id="current-time"></span></p>
+        </div>
+    <% } %>
+    
+    <div class="suggestions">
+        <h3>Quizás buscabas:</h3>
+        <div class="suggestion-buttons">
+            <a href="/" class="btn btn-primary">
+                <i class="fas fa-home"></i> Inicio
+            </a>
+            <a href="/pokemon" class="btn btn-secondary">
+                <i class="fas fa-list"></i> Lista de Pokémon
+            </a>
+            <a href="/search" class="btn btn-outline">
+                <i class="fas fa-search"></i> Buscar Pokémon
+            </a>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Mostrar hora actual
+    document.getElementById('current-time').textContent = new Date().toLocaleString();
+</script>

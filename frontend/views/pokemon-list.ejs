@@ -1,0 +1,57 @@
+<div class="page-header">
+    <h1 class="page-title">Lista de Pokémon</h1>
+    <p class="page-subtitle">Explora todos los Pokémon disponibles. Página <%= pagination.current %> de <%= pagination.total %></p>
+</div>
+
+<div class="list-controls">
+    <form action="/search" method="GET" class="search-form">
+        <input type="text" 
+               name="q" 
+               placeholder="Buscar Pokémon por nombre o número..."
+               class="form-input">
+        <button type="submit" class="btn btn-primary">
+            <i class="fas fa-search"></i> Buscar
+        </button>
+    </form>
+</div>
+
+<% if (pokemons && pokemons.length > 0) { %>
+    <div class="pokemon-grid">
+        <% pokemons.forEach(pokemon => { 
+            const id = pokemon.url.split('/').filter(Boolean).pop();
+            const name = pokemon.name;
+        %>
+            <a href="/pokemon/<%= id %>" class="pokemon-card card">
+                <div class="pokemon-number">#<%= id %></div>
+                <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/<%= id %>.png" 
+                     alt="<%= name %>"
+                     class="pokemon-sprite">
+                <h3 class="pokemon-name"><%= name.charAt(0).toUpperCase() + name.slice(1) %></h3>
+            </a>
+        <% }) %>
+    </div>
+
+    <% if (pagination.total > 1) { %>
+        <div class="pagination">
+            <% if (pagination.hasPrev) { %>
+                <a href="/pokemon?page=<%= pagination.current - 1 %>" class="btn btn-outline pagination-btn">
+                    <i class="fas fa-chevron-left"></i> Anterior
+                </a>
+            <% } %>
+            
+            <span class="pagination-info">Página <%= pagination.current %> de <%= pagination.total %></span>
+            
+            <% if (pagination.hasNext) { %>
+                <a href="/pokemon?page=<%= pagination.current + 1 %>" class="btn btn-outline pagination-btn">
+                    Siguiente <i class="fas fa-chevron-right"></i>
+                </a>
+            <% } %>
+        </div>
+    <% } %>
+<% } else { %>
+    <div class="no-results">
+        <i class="fas fa-search fa-3x"></i>
+        <h3>No se encontraron Pokémon</h3>
+        <a href="/pokemon" class="btn btn-primary">Volver a la lista</a>
+    </div>
+<% } %>

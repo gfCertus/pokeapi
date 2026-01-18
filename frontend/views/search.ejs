@@ -1,0 +1,111 @@
+<div class="search-page">
+    <div class="page-header">
+        <h1 class="page-title">
+            <i class="fas fa-search"></i> Buscar Pokémon
+        </h1>
+        <p class="page-subtitle">
+            Encuentra Pokémon por nombre o número.
+        </p>
+    </div>
+
+    <form action="/search" method="GET" class="search-form">
+        <div class="search-input-group">
+            <input type="text" 
+                   name="q" 
+                   id="search-input"
+                   placeholder="Ej: Pikachu, 25, Charizard"
+                   value="<%= searchTerm || '' %>"
+                   class="form-input"
+                   autofocus>
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-search"></i> Buscar
+            </button>
+        </div>
+    </form>
+
+    <div class="search-results">
+        <% if (error) { %>
+            <div class="no-results">
+                <i class="fas fa-question-circle fa-3x"></i>
+                <h3>Pokémon no encontrado</h3>
+                <p><%= error %></p>
+                <p>Intenta con otro nombre o número.</p>
+            </div>
+        <% } else if (results) { %>
+            <div class="search-result card">
+                <div class="result-header">
+                    <h2>
+                        #<%= results.id %>
+                        <span class="pokemon-name"><%= results.name.charAt(0).toUpperCase() + results.name.slice(1) %></span>
+                    </h2>
+                    <div class="types">
+                        <% results.types.forEach(type => { %>
+                            <span class="type-badge type-<%= type %>">
+                                <%= type %>
+                            </span>
+                        <% }) %>
+                    </div>
+                </div>
+                
+                <div class="result-content">
+                    <div class="result-image">
+                        <img src="<%= results.sprites.official_artwork || results.sprites.front_default %>" 
+                             alt="<%= results.name %>">
+                    </div>
+                    
+                    <div class="result-info">
+                        <div class="info-section">
+                            <h4>Información básica</h4>
+                            <ul>
+                                <li><strong>Altura:</strong> <%= results.height %> m</li>
+                                <li><strong>Peso:</strong> <%= results.weight %> kg</li>
+                                <li><strong>Experiencia:</strong> <%= results.base_experience %></li>
+                            </ul>
+                        </div>
+                        
+                        <div class="action-links">
+                            <a href="/pokemon/<%= results.id %>" class="btn btn-primary">
+                                <i class="fas fa-external-link-alt"></i> Ver detalles completos
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <% } else if (searchTerm) { %>
+            <div class="no-results">
+                <i class="fas fa-search fa-3x"></i>
+                <h3>Ingresa un término de búsqueda</h3>
+                <p>Busca Pokémon por nombre o número en la Pokédex Nacional.</p>
+            </div>
+        <% } %>
+    </div>
+
+    <div class="popular-searches">
+        <h3><i class="fas fa-fire"></i> Búsquedas populares</h3>
+        <div class="popular-grid">
+            <% const popular = [
+                {id: 25, name: 'Pikachu'},
+                {id: 6, name: 'Charizard'},
+                {id: 150, name: 'Mewtwo'},
+                {id: 1, name: 'Bulbasaur'},
+                {id: 133, name: 'Eevee'},
+                {id: 94, name: 'Gengar'},
+                {id: 130, name: 'Gyarados'},
+                {id: 3, name: 'Venusaur'}
+            ]; %>
+            
+            <% popular.forEach(p => { %>
+                <a href="/pokemon/<%= p.id %>" class="popular-card card">
+                    <div class="popular-image">
+                        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/<%= p.id %>.png" 
+                             alt="<%= p.name %>">
+                    </div>
+                    <div class="popular-info">
+                        <span class="popular-number">#<%= p.id %></span>
+                        <span class="popular-name"><%= p.name %></span>
+                    </div>
+                </a>
+            <% }) %>
+        </div>
+    </div>
+</div>
